@@ -1,0 +1,41 @@
+{
+  "name": "kuandd/graphql-relay",
+  "description": "implement relay schema depends on webonyx/graphql-php",
+  "minimum-stability": "stable",
+  "type": "library",
+  "license": "MIT",
+  "keywords":          [
+    "graphql",
+    "API"
+  ],
+  "authors": [
+    {
+      "name": "pikaqiu",
+      "email": "pikaqiu@kdd.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.1",
+    "webonyx/graphql-php": "^0.13",
+    "kuandd/graphql-resolve": "^0.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7.2",
+    "phpstan/phpstan": "^0.11.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "GraphQLRelay\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "GraphQLRelay\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "phpunit tests",
+    "static-analysis": "phpstan analyse --ansi --memory-limit 256M",
+    "check-all": "composer static-analysis && composer test"
+  }
+}
