@@ -7,7 +7,7 @@ use GraphQL\Type\Schema;
 use GraphQLRelay\Tests\Sim\Query;
 use PHPUnit\Framework\TestCase;
 
-class SchemaTest extends TestCase
+class SchemaInit extends TestCase
 {
     protected $schema;
 

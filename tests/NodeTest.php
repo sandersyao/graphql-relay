@@ -5,7 +5,7 @@ namespace GraphQLRelay\Tests;
 
 use GraphQL\GraphQL;
 
-class NodeTest extends SchemaTest
+class NodeTest extends SchemaInit
 {
     public function testSchemaCreate()
     {
@@ -33,7 +33,6 @@ node (id: $id) {
             $operationName
         );
         $data = $result->toArray();
-        var_dump($data);
         $this->assertEquals($id, $data['data']['node']['id']);
     }
 }
