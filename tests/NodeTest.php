@@ -5,8 +5,17 @@ namespace GraphQLRelay\Tests;
 
 use GraphQL\GraphQL;
 
+/**
+ * node查询测试
+ *
+ * Class NodeTest
+ * @package GraphQLRelay\Tests
+ */
 class NodeTest extends SchemaInit
 {
+    /**
+     * 测试用例 使用schema测试全局ID查询
+     */
     public function testSchemaCreate()
     {
         $id     = base64_encode(base64_encode('Order:1'));
