@@ -41,6 +41,7 @@ class OrderType extends AbstractObjectType
                     'name'  => 'sn',
                     'type'  => Type::string(),
                 ],
+                OrderGoodsQuery::fetchOptions(),
             ]);
         };
     }
