@@ -471,7 +471,177 @@ array(1) {
 }
 ```
 
+### Mutation input & clientMutationId 协议
 
-1. Mutation ClientInputId 协议
+创建订单并获得可预期的结果，通过clientMutationId对应请求的结果，我们需要继承 AbstractObjectType 抽象类来声明一个变更。
+```php
+use Closure;
+use GraphQL\Type\Definition\InputObjectType;
+use GraphQL\Type\Definition\ObjectType;
+use GraphQLRelay\Queries\AbstractRelayMutation;
+use GraphQL\Type\Definition\ResolveInfo;
 
-希望本轮子能节省你们的开发时间。
+/**
+ * 创建订单模拟
+ *
+ * Class CreateOrderQuery
+ * @package GraphQLRelay\Tests\Sim
+ */
+class CreateOrderQuery extends AbstractRelayMutation
+{
+    /**
+     * 名字
+     *
+     * @return string
+     */
+    public function name(): string
+    {
+        return  'createOrder';
+    }
+
+    /**
+     * 获取输出对象
+     *
+     * @return InputObjectType
+     */
+    public function getInputObject(): InputObjectType
+    {
+        return  OrderInput::getObject();
+    }
+
+    /**
+     * 获取返回对象
+     *
+     * @return ObjectType
+     */
+    public function getPayloadObject(): ObjectType
+    {
+        return  OrderCreated::getObject();
+    }
+
+    /**
+     * 解析
+     *
+     * @return Closure
+     */
+    public function getResolve(): Closure
+    {
+        return  function ($root, $args, $context, ResolveInfo $info) {
+
+            return  [
+                'id'    => 1,
+                'sn'    => 'abc',
+            ];
+        };
+    }
+}
+```
+Relay 协议中对变更有两个主要约束：
+
+1. 输入参数有且只有一个input，且类型为InputObject类型；
+1. 如果参数中带有clientMutationId则，输出结果中必然有clientMutationId属性。
+
+对于后者我没有做变通，目前只是强制添加的clientMutationId属性。
+
+```php
+use GraphQLRelay\Types\AbstractRelayPayloadObject;
+
+/**
+ * 创建订单输出结果
+ *
+ * Class OrderCreated
+ * @package GraphQLRelay\Tests\Sim
+ */
+class OrderCreated extends AbstractRelayPayloadObject
+{
+    /**
+     * 获取输出字段
+     *
+     * @return mixed
+     */
+    public function fields()
+    {
+        return  OrderType::getInstance()->fields();
+    }
+}
+```
+
+以上的输出类型代码中直接引用Order类型的字段，这种写法可以复用很多业务逻辑。
+
+```php
+use GraphQL\Type\Definition\Type;
+use GraphQLRelay\Types\AbstractRelayInputObject;
+
+class OrderInput extends AbstractRelayInputObject
+{
+    public function fields()
+    {
+        return  function () {
+            return  [
+                [
+                    'name'  => 'userId',
+                    'type'  => Type::string(),
+                ],
+            ];
+        };
+    }
+}
+```
+
+在输入参数中，目前只有一个参数userId。
+
+我们来看看测试效果，不过这里就省略了根变更声明：
+
+```php
+$id         = 1;
+$mutationId = uniqid();
+$query      = 'mutation TestMutation ($order: OrderInput!) {
+createOrder (input: $order) {
+id
+sn
+clientMutationId
+}}';
+$rootValue = null;
+$variableValues = [
+    'order'     => [
+        'clientMutationId'  => $mutationId,
+        'userId'            => $id,
+    ],
+];
+$context = [];
+$operationName = null;
+
+$result = GraphQL::executeQuery(
+    $this->schema,
+    $query,
+    $rootValue,
+    $context,
+    $variableValues,
+    $operationName
+);
+$data = $result->toArray();
+var_dump($data);
+```
+
+输出结果如下：
+
+```php
+array(1) {
+  ["data"]=>
+  array(1) {
+    ["createOrder"]=>
+    array(3) {
+      ["id"]=>
+      string(28) "VDNKa1pYSkRjbVZoZEdWa09qRT0="
+      ["sn"]=>
+      string(3) "abc"
+      ["clientMutationId"]=>
+      string(13) "5d038dc1ee27c"
+    }
+  }
+}
+```
+
+以上三种协议均已经实现，只不过该项目还处于不稳定状态，请勿部署于生产环境。
+
+希望本轮子能节省你们的开发时间，也欢迎大家的PR。
