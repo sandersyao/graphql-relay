@@ -50,7 +50,6 @@ node (id: $id) {
             $operationName
         );
         $data = $result->toArray();
-        var_dump($data);
         $this->assertEquals($id, $data['data']['node']['id']);
     }
 }
