@@ -4,6 +4,7 @@
 namespace GraphQLRelay\Tests;
 
 use GraphQL\Type\Schema;
+use GraphQLRelay\Tests\Sim\Mutation;
 use GraphQLRelay\Tests\Sim\Query;
 use PHPUnit\Framework\TestCase;
 
@@ -29,7 +30,8 @@ class SchemaInit extends TestCase
     {
         parent::setUp();
         $this->schema = new Schema([
-            'query' => Query::getObject(),
+            'query'     => Query::getObject(),
+            'mutation'  => Mutation::getObject(),
         ]);
     }
 }

@@ -28,6 +28,11 @@ class Relay
     const TYPE_FIELD                    = '__type';
 
     /**
+     * 变更ID
+     */
+    const MUTATION_ID                   = 'clientMutationId';
+
+    /**
      * 合并参数
      *
      * @param array $args
