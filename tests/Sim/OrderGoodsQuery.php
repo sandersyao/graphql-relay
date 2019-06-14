@@ -5,6 +5,7 @@ namespace GraphQLRelay\Tests\Sim;
 use Closure;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQLRelay\ConnectionBuilder;
+use GraphQLRelay\Relay;
 use GraphQLResolve\AbstractQuery;
 
 /**
@@ -23,6 +24,16 @@ class OrderGoodsQuery extends AbstractQuery
     public function name(): string
     {
         return  'listGoods';
+    }
+
+    /**
+     * 获取查询参数
+     *
+     * @return array
+     */
+    public function args()
+    {
+       return   Relay::mergeConnectionArgs();
     }
 
     /**

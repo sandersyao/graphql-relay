@@ -27,22 +27,13 @@ class Relay
      */
     const TYPE_FIELD                    = '__type';
 
-    const EDGE_TYPE_NAME_SUFFIX         = 'Edge';
-
-    const CONNECTION_TYPE_NAME_SUFFIX   = 'Connection';
-
     /**
-     * 创建连接
+     * 合并参数
+     *
+     * @param array $args
+     * @return array
      */
-    public static function createConnection($nodeObject)
-    {
-        return  Connection::getInstance($nodeObject)->fetch();
-    }
-
-    /**
-     * 合并连接参数
-     */
-    public static function mergeConnectionArgs(array $args = [])
+    public static function mergeConnectionArgs(array $args = []): array
     {
         $argsConnection = [
             'first'     => [
