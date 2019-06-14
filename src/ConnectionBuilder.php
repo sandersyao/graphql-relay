@@ -3,16 +3,30 @@
 
 namespace GraphQLRelay;
 
-
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 use GraphQLRelay\Types\PageInfo;
 use GraphQLResolve\Builders\ObjectTypeBuilder;
 
+/**
+ * 连接构造器
+ *
+ * Class ConnectionBuilder
+ * @package GraphQLRelay
+ */
 class ConnectionBuilder extends ObjectTypeBuilder
 {
+    /**
+     * 名称后缀
+     */
     const NAME_SUFFIX   = 'Connection';
 
+    /**
+     * 根据node设置名称
+     *
+     * @param ObjectType $node
+     * @return $this
+     */
     public function name (ObjectType $node)
     {
         parent::name($node->name . self::NAME_SUFFIX);
@@ -20,6 +34,12 @@ class ConnectionBuilder extends ObjectTypeBuilder
         return  $this;
     }
 
+    /**
+     * 根据node设置返回字段
+     *
+     * @param ObjectType $node
+     * @return $this
+     */
     public function fields (ObjectType $node)
     {
         parent::fields([
@@ -38,8 +58,14 @@ class ConnectionBuilder extends ObjectTypeBuilder
         return  $this;
     }
 
-    public static function getObject (ObjectType $node) {
-
+    /**
+     * 获取对象
+     *
+     * @param ObjectType $node
+     * @return mixed
+     */
+    public static function getObject (ObjectType $node): ObjectType
+    {
         return  self::getInstance()->name($node)->fields($node)->build();
     }
 }
