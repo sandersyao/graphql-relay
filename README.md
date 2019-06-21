@@ -313,7 +313,10 @@ class OrderGoodsQuery extends AbstractQuery
      */
     public function type()
     {
-        return  ConnectionBuilder::getObject(OrderGoodsType::getObject());
+        return  ConnectionBuilder::getObject(OrderGoodsType::getObject(), function ($nodeData) {
+
+            return  $nodeData['id'];
+        });
     }
 
     /**
@@ -643,5 +646,10 @@ array(1) {
 ```
 
 以上三种协议均已经实现，只不过该项目还处于不稳定状态，请勿部署于生产环境。
+
+## 接下来要做的：
+
+1. connection 的 cursor 参数解析还是个问题，目前只是将callable参数传入 builder 来解决输出问题，但并没有解决参数问题。
+1. 进一步完善测试用例；
 
 希望本轮子能节省你们的开发时间，也欢迎大家的PR。
