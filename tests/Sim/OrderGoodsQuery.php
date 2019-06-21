@@ -43,7 +43,10 @@ class OrderGoodsQuery extends AbstractQuery
      */
     public function type()
     {
-        return  ConnectionBuilder::getObject(OrderGoodsType::getObject());
+        return  ConnectionBuilder::getObject(OrderGoodsType::getObject(), function ($nodeData) {
+
+            return  $nodeData['id'];
+        });
     }
 
     /**

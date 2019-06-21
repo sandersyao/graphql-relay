@@ -50,6 +50,6 @@ node (id: $id) {
             $operationName
         );
         $data = $result->toArray();
-        $this->assertEquals($id, $data['data']['node']['id']);
+        $this->assertEquals(base64_encode('1'), $data['data']['node']['listGoods']['edges'][0]['cursor']);
     }
 }

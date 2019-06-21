@@ -38,9 +38,10 @@ class ConnectionBuilder extends ObjectTypeBuilder
      * 根据node设置返回字段
      *
      * @param ObjectType $node
+     * @param callable $cursorResolve
      * @return $this
      */
-    public function fields (ObjectType $node)
+    public function fields (ObjectType $node, callable $cursorResolve)
     {
         parent::fields([
             [
@@ -51,7 +52,7 @@ class ConnectionBuilder extends ObjectTypeBuilder
             [
                 'name'          => 'edges',
                 'description'   => $node->name . '列表数据',
-                'type'          => Type::listOf(EdgeBuilder::getObject($node)),
+                'type'          => Type::listOf(EdgeBuilder::getObject($node, $cursorResolve)),
             ],
         ]);
 
@@ -62,10 +63,11 @@ class ConnectionBuilder extends ObjectTypeBuilder
      * 获取对象
      *
      * @param ObjectType $node
+     * @param callable $cursorResolve
      * @return mixed
      */
-    public static function getObject (ObjectType $node): ObjectType
+    public static function getObject (ObjectType $node, callable $cursorResolve): ObjectType
     {
-        return  self::getInstance()->name($node)->fields($node)->build();
+        return  self::getInstance()->name($node)->fields($node, $cursorResolve)->build();
     }
 }

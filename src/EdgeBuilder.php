@@ -32,18 +32,19 @@ class EdgeBuilder extends ObjectTypeBuilder
      * 根据node设置返回字段
      *
      * @param ObjectType $node
+     * @param callable $cursorResolve
      * @return $this
      */
-    public function fields (ObjectType $node)
+    public function fields (ObjectType $node, callable $cursorResolve)
     {
         parent::fields([
             [
                 'name'          => 'cursor',
                 'description'   => $node->name . '列表游标',
                 'type'          => Type::string(),
-                'resolve'       => function () {
+                'resolve'       => function ($root) use ($cursorResolve) {
 
-                    return  uniqid();
+                    return  base64_encode($cursorResolve($root));
                 }
             ],
             [
@@ -64,10 +65,11 @@ class EdgeBuilder extends ObjectTypeBuilder
      * 获取对象
      *
      * @param ObjectType $node
+     * @param callable $cursorResolve
      * @return mixed
      */
-    public static function getObject (ObjectType $node): ObjectType
+    public static function getObject (ObjectType $node, callable $cursorResolve): ObjectType
     {
-        return  self::getInstance()->name($node)->fields($node)->build();
+        return  self::getInstance()->name($node)->fields($node, $cursorResolve)->build();
     }
 }

@@ -35,6 +35,11 @@ abstract class AbstractRelayMutation extends AbstractQuery
      */
     abstract public function getResolve(): Closure;
 
+    /**
+     * 获取参数
+     *
+     * @return array
+     */
     public function args(): array
     {
         $input  = $this->getInputObject();
@@ -47,11 +52,21 @@ abstract class AbstractRelayMutation extends AbstractQuery
         ];
     }
 
+    /**
+     * 获取返回类型
+     *
+     * @return ObjectType
+     */
     public function type()
     {
         return  $this->getPayloadObject();
     }
 
+    /**
+     * 获取解析逻辑
+     *
+     * @return Closure
+     */
     public function resolve(): Closure
     {
         return  function ($root, $args, $context, ResolveInfo $info) {

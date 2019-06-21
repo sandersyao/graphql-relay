@@ -1,6 +1,7 @@
 <?php
 namespace GraphQLRelay;
 
+use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 use LogicException;
 
