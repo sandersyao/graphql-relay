@@ -90,7 +90,7 @@ class Relay
      */
     public static function getConnectionArgs(array $args): array
     {
-        $result = [];
+        $result = $args;
 
         if (isset($args['after'])) {
 
