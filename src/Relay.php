@@ -81,4 +81,27 @@ class Relay
 
         return  array_merge($args, $argsConnection);
     }
+
+    /**
+     * 获取连接参数
+     *
+     * @param array $args
+     * @return array
+     */
+    public static function getConnectionArgs(array $args): array
+    {
+        $result = [];
+
+        if (isset($args['after'])) {
+
+            $result['after']    = base64_decode($args['after']);
+        }
+
+        if (isset($args['before'])) {
+
+            $result['before']   = base64_decode($args['before']);
+        }
+
+        return  $result;
+    }
 }

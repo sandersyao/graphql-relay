@@ -58,6 +58,8 @@ class OrderGoodsQuery extends AbstractQuery
     {
         return  function ($root, $context, $args, ResolveInfo $info) {
 
+            //$args   = Relay::getConnectionArgs($args);
+
             return  [
                 'pageInfo'  => [
                     'hasPreviousPage'   => false,
